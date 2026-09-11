@@ -1,0 +1,20 @@
+{
+  "assets": [
+    {
+      "repository": "KietzmannLab/minimal_world_model_interp",
+      "commit": "0a1755cf6195cfd335838f3c48b79a7b2d7507fb",
+      "path": "paper_data/model/final_epoch_79.pth",
+      "bytes": 61327008,
+      "sha256": "bedb50aeefa847ebd99d1a8b5f7c4c9dacaa397eddf816bd840b745710f6964c",
+      "url": "https://raw.githubusercontent.com/KietzmannLab/minimal_world_model_interp/0a1755cf6195cfd335838f3c48b79a7b2d7507fb/paper_data/model/final_epoch_79.pth"
+    },
+    {
+      "repository": "KietzmannLab/minimal_world_model_interp",
+      "commit": "0a1755cf6195cfd335838f3c48b79a7b2d7507fb",
+      "path": "setup/model.py",
+      "bytes": 7789,
+      "sha256": "48cf353013de647ea0cacbee677bb1709a236fafe9960f7712ac0124d15e1085",
+      "url": "https://raw.githubusercontent.com/KietzmannLab/minimal_world_model_interp/0a1755cf6195cfd335838f3c48b79a7b2d7507fb/setup/model.py"
+    }
+  ]
+}

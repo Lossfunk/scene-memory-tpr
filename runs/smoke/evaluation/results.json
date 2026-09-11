@@ -1,0 +1,461 @@
+{
+  "status": "replay/refit evaluation; not a new confirmatory cohort",
+  "device": "cpu",
+  "models": {
+    "f26r16_linear_s51": {
+      "representation": {
+        "mse": 0.2110700011253357,
+        "r2_training_mean_reference": 0.017518579959869385,
+        "layer_r2": [
+          0.28229063749313354,
+          -0.12285482883453369,
+          -0.0376894474029541
+        ],
+        "original_output_agreement": 0.0833333358168602,
+        "correct_answer_accuracy": 0.0833333358168602,
+        "mean_KL_original_to_reconstruction": 8.391809463500977
+      },
+      "retrieval": {
+        "top1": {
+          "mean": 0.3125,
+          "ci95": [
+            0.22916666666666663,
+            0.3958333333333333
+          ]
+        },
+        "pairwise": {
+          "mean": 0.7041666666666666,
+          "ci95": [
+            0.6208333333333333,
+            0.7875
+          ]
+        }
+      },
+      "behavior": {
+        "single": {
+          "target_accuracy": {
+            "mean": 0.125,
+            "ci95": [
+              0.0,
+              0.375
+            ]
+          },
+          "offtarget_accuracy": {
+            "mean": 0.9375,
+            "ci95": [
+              0.84375,
+              1.0
+            ]
+          },
+          "all_five_correct": {
+            "mean": 0.125,
+            "ci95": [
+              0.0,
+              0.375
+            ]
+          },
+          "target_probability": {
+            "mean": 0.09235737344626682,
+            "ci95": [
+              3.5517053335136586e-05,
+              0.21557665689449912
+            ]
+          },
+          "offtarget_probability": {
+            "mean": 0.9124047673069333,
+            "ci95": [
+              0.8456474821973406,
+              0.9715661766053005
+            ]
+          },
+          "all_targets_correct": {
+            "mean": 0.125,
+            "ci95": [
+              0.0,
+              0.375
+            ]
+          }
+        },
+        "swap": {
+          "target_accuracy": {
+            "mean": 0.1875,
+            "ci95": [
+              0.0,
+              0.375
+            ]
+          },
+          "offtarget_accuracy": {
+            "mean": 0.9583333333333333,
+            "ci95": [
+              0.875,
+              1.0
+            ]
+          },
+          "all_five_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "target_probability": {
+            "mean": 0.23458093694670312,
+            "ci95": [
+              0.11326246229344603,
+              0.3645773011046567
+            ]
+          },
+          "offtarget_probability": {
+            "mean": 0.9026999266846834,
+            "ci95": [
+              0.8347626012566464,
+              0.9553240579486104
+            ]
+          },
+          "all_targets_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "selection_joint_score": {
+          "mean": 0.0625,
+          "ci95": [
+            0.0,
+            0.1875
+          ]
+        }
+      }
+    },
+    "f26r16_tanh_s51": {
+      "representation": {
+        "mse": 0.1916353553533554,
+        "r2_training_mean_reference": 0.107982337474823,
+        "layer_r2": [
+          0.31538456678390503,
+          -0.03464710712432861,
+          0.08675134181976318
+        ],
+        "original_output_agreement": 0.1666666716337204,
+        "correct_answer_accuracy": 0.1666666716337204,
+        "mean_KL_original_to_reconstruction": 6.591111660003662
+      },
+      "retrieval": {
+        "top1": {
+          "mean": 0.35416666666666663,
+          "ci95": [
+            0.2708333333333333,
+            0.4375
+          ]
+        },
+        "pairwise": {
+          "mean": 0.725,
+          "ci95": [
+            0.6458333333333334,
+            0.8
+          ]
+        }
+      },
+      "behavior": {
+        "single": {
+          "target_accuracy": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "offtarget_accuracy": {
+            "mean": 0.9375,
+            "ci95": [
+              0.84375,
+              1.0
+            ]
+          },
+          "all_five_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "target_probability": {
+            "mean": 0.023194707827637936,
+            "ci95": [
+              2.1571262974500988e-05,
+              0.06408593123532035
+            ]
+          },
+          "offtarget_probability": {
+            "mean": 0.9284559555509976,
+            "ci95": [
+              0.8751116428802796,
+              0.9770033181794509
+            ]
+          },
+          "all_targets_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "swap": {
+          "target_accuracy": {
+            "mean": 0.1875,
+            "ci95": [
+              0.0,
+              0.375
+            ]
+          },
+          "offtarget_accuracy": {
+            "mean": 0.9583333333333333,
+            "ci95": [
+              0.875,
+              1.0
+            ]
+          },
+          "all_five_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "target_probability": {
+            "mean": 0.18355776618287767,
+            "ci95": [
+              0.03986459570396727,
+              0.33722430774470863
+            ]
+          },
+          "offtarget_probability": {
+            "mean": 0.9174983729113654,
+            "ci95": [
+              0.85376459677683,
+              0.9629491542992382
+            ]
+          },
+          "all_targets_correct": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "selection_joint_score": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    }
+  },
+  "controls": {
+    "original": {
+      "single": {
+        "target_accuracy": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "offtarget_accuracy": {
+          "mean": 0.96875,
+          "ci95": [
+            0.90625,
+            1.0
+          ]
+        },
+        "all_five_correct": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "target_probability": {
+          "mean": 5.291498551005646e-07,
+          "ci95": [
+            3.98721000411897e-08,
+            1.3817419681600922e-06
+          ]
+        },
+        "offtarget_probability": {
+          "mean": 0.9717420995717603,
+          "ci95": [
+            0.9273155493619978,
+            0.9976462967808364
+          ]
+        },
+        "all_targets_correct": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "swap": {
+        "target_accuracy": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "offtarget_accuracy": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "all_five_correct": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "target_probability": {
+          "mean": 0.0021960032159873163,
+          "ci95": [
+            6.429681271333102e-06,
+            0.006502259860519155
+          ]
+        },
+        "offtarget_probability": {
+          "mean": 0.9905664177012903,
+          "ci95": [
+            0.9822038689115651,
+            0.9976263162541937
+          ]
+        },
+        "all_targets_correct": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "selection_joint_score": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "donor": {
+      "single": {
+        "target_accuracy": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "offtarget_accuracy": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "all_five_correct": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "target_probability": {
+          "mean": 0.9948809061519742,
+          "ci95": [
+            0.9878782606102696,
+            0.9997216912238462
+          ]
+        },
+        "offtarget_probability": {
+          "mean": 0.987322183418798,
+          "ci95": [
+            0.9740564987502716,
+            0.9964633228496425
+          ]
+        },
+        "all_targets_correct": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "swap": {
+        "target_accuracy": {
+          "mean": 0.9375,
+          "ci95": [
+            0.8125,
+            1.0
+          ]
+        },
+        "offtarget_accuracy": {
+          "mean": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "all_five_correct": {
+          "mean": 0.875,
+          "ci95": [
+            0.625,
+            1.0
+          ]
+        },
+        "target_probability": {
+          "mean": 0.9291058155140797,
+          "ci95": [
+            0.8457954698725324,
+            0.993643307858749
+          ]
+        },
+        "offtarget_probability": {
+          "mean": 0.9887586052744557,
+          "ci95": [
+            0.9729821791650735,
+            0.9977130840322085
+          ]
+        },
+        "all_targets_correct": {
+          "mean": 0.875,
+          "ci95": [
+            0.625,
+            1.0
+          ]
+        }
+      },
+      "selection_joint_score": {
+        "mean": 0.9375,
+        "ci95": [
+          0.8125,
+          1.0
+        ]
+      }
+    }
+  },
+  "model_sha256": {
+    "f26r16_linear_s51": "0e5117377853038d7250efe0ee8cff11981cea8ae9c6eafab0e2b919d6d8fa1d",
+    "f26r16_tanh_s51": "f770f88cc91fa79e3a08d23ec1e4f3ddf5328ae0c5c463e6b0ccc3493daa7f30"
+  },
+  "matched_families": 8
+}

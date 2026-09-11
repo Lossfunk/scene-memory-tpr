@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: scene-tpr
+Version: 0.1.0
+Summary: A small reproducible study of letter-position tensor-product edits in a frozen scene network
+Requires-Python: >=3.12
+License-File: LICENSE
+Requires-Dist: numpy>=2.0
+Requires-Dist: torch>=2.6
+Requires-Dist: matplotlib>=3.8
+Dynamic: license-file

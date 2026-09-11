@@ -1,0 +1,32 @@
+{
+  "export_date": "2026-09-11",
+  "study_date": "2026-09-10",
+  "upstream_checkpoint_condition": "unverified",
+  "source_module_sha256": {
+    "episodes.py": "0c26d00cf7c461cdd9660c8f853c70b7ac5e8d1492f1b3bfd4b84d0c3ff03f12",
+    "features.py": "cd7fc1eb3c327708b1e94b56830fc52c37869a3375f4def6ff98c28b6eed41f3",
+    "clean_tpr.py": "6c418abc4e59f3e1feec517126fdecba388388be5c5e0d7b28bef7f09ae41df1",
+    "clean_tpr_fit.py": "5b4f8e3f0cfb80b395160d4032f36783dbacd7ab990d83f9b68f830d2423ee05",
+    "model.py": "1c181f9d8db7a3feec578a53988531dd20d55330221605caa849d91d2df1ff73",
+    "binding.py": "c28079a241f9c3374b8da031af0a98c169780b9f3a957e89d517af0b0956ce65",
+    "interventions.py": "1947882988ee660c69716cc144db7424e0f34ef96c98664f385f70340704de81",
+    "exploration.py": "fb8c81ce6bb62a119527c52a202b6e6ea4df4322f1f8a756302825e0ed8dd151",
+    "diagnostics.py": "fa2c7d852ddc5ff31586e35aab3d56536210ab0c3563ecb3078be129ddd132b7",
+    "fitting.py": "179bf62755da55d2ea4051ceb2c9da74e544a03f9d7ff00eb203b1f53434b3a1",
+    "exploration_eval.py": "9e990a3894b1f298b1e98b2de98bf3fba01078158f1bf8a5f7730d83d6424f1e"
+  },
+  "archived_files_sha256": {
+    "outputs/clean_tpr_v3/test_results.json": "2328647f5aaf6d4614487be5e0c1c2f9b619c7d27601cadfbf38ee2f1a40cf4d",
+    "outputs/clean_tpr_v3/config.json": "ed1afab8c84bc73119b2f55cded082a9becc85e84e752ac0eda6f8b6bb326206",
+    "outputs/clean_tpr_v3/validation_at_selection.json": "00138e35f7489733e9b530a741ab03545f59e7cea986f336fedae5652f4c10de",
+    "data/clean_tpr_v3/train.npz": "cbf350caaedcb5fea226e616c48dea52e5f775d3b427d5391f1fc962a28b938b",
+    "data/clean_tpr_v3/test.npz": "f37d56379ef28290db154025cbdf404aff92a54dc79c6ef3747b443d7fdcfd1e",
+    "data/clean_tpr_v3/matched_test.npz": "7cd225a64d19712b9b484379603043b804350f9cbeac4172c9f556f9d517650b"
+  },
+  "portability_changes": [
+    "Extracted only collection, fitting, TPR, metrics and evaluation dependencies from frozen study sources.",
+    "Removed unused query-answer and age enrichment from collected data; explanatory inputs and generation RNG are unchanged.",
+    "Added explicit pinned-asset verification and configurable upstream root.",
+    "Added a focused CLI, offline evidence audit and tests; no new scientific results."
+  ]
+}

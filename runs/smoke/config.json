@@ -1,0 +1,66 @@
+{
+  "scope": "TPR decomposition with fixed coordinatewise monotonic bounding; no query-answer feature, KL loss, history gates or generic neural map",
+  "device": "mps",
+  "splits": {
+    "train": {
+      "scenes": 12,
+      "seed": 413001
+    },
+    "validation": {
+      "scenes": 6,
+      "seed": 413002
+    },
+    "test": {
+      "scenes": 8,
+      "seed": 413003
+    }
+  },
+  "matched_test": {
+    "scenes": 8,
+    "seed": 413004
+  },
+  "snapshot_steps": [
+    34,
+    64,
+    99
+  ],
+  "minimum_observations": 3,
+  "training": {
+    "epochs": 2,
+    "patience": 2,
+    "batch_families": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "seed": 51
+  },
+  "pair_loss_weight": 1.0,
+  "candidates": [
+    {
+      "name": "f26r16_linear",
+      "filler_rank": 26,
+      "role_rank": 16,
+      "activation": "identity"
+    },
+    {
+      "name": "f26r16_tanh",
+      "filler_rank": 26,
+      "role_rank": 16,
+      "activation": "tanh"
+    }
+  ],
+  "edit_modes": [
+    "clipped_difference"
+  ],
+  "selection": "Focused replay/refit of the two published models; no fresh model selection. Historical selection is documented separately.",
+  "repeat_seeds": [],
+  "delays": [
+    5
+  ],
+  "bootstrap_scene_families": 4000,
+  "notes": [
+    "All activation functions have slope one at zero. Centered sigmoid is exactly tanh after rescaling, so is not a separate candidate.",
+    "Inventory and geometry are marginal tensor terms; centering alone is an exact reparameterization at initialization, while independent marginal heads relax shared-rank constraints.",
+    "No future/query label, node ID, or visitation-dependent gate is a model input. The original observed-current-input and integrated-position context q is retained in every model.",
+    "Latent factor transposition exchanges filler/role naming without increasing capacity; it is tested as an algebraic identity, not an independent candidate."
+  ]
+}

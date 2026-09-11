@@ -1,0 +1,14 @@
+{
+  "model": "f26r16_tanh_s51",
+  "spec": {
+    "name": "f26r16_tanh",
+    "filler_rank": 26,
+    "role_rank": 16,
+    "activation": "tanh"
+  },
+  "edit_mode": "clipped_difference",
+  "validation_joint_score": 0.668,
+  "rule": "Among bounded-reconstruction candidates and strictly bounded edit modes, maximize the equal mean of single-substitution and swap all-five-probe correctness on validation delay five; ties prefer fewer parameters then lower validation state MSE. Raw difference and linear models are diagnostic controls only. Repeat the selected specification and mode with two fixed seeds; never reselect using test.",
+  "validation_sha256": "00138e35f7489733e9b530a741ab03545f59e7cea986f336fedae5652f4c10de",
+  "test_accessed": false
+}

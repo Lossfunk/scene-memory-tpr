@@ -1,0 +1,185 @@
+{
+  "scope": "TPR decomposition with fixed coordinatewise monotonic bounding; no query-answer feature, KL loss, history gates or generic neural map",
+  "device": "mps",
+  "splits": {
+    "train": {
+      "scenes": 1000,
+      "seed": 413001
+    },
+    "validation": {
+      "scenes": 250,
+      "seed": 413002
+    },
+    "test": {
+      "scenes": 400,
+      "seed": 413003
+    }
+  },
+  "matched_test": {
+    "scenes": 400,
+    "seed": 413004
+  },
+  "snapshot_steps": [
+    34,
+    64,
+    99
+  ],
+  "minimum_observations": 3,
+  "training": {
+    "epochs": 100,
+    "patience": 12,
+    "batch_families": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "seed": 51
+  },
+  "pair_loss_weight": 1.0,
+  "candidates": [
+    {
+      "name": "plain16_linear",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "identity"
+    },
+    {
+      "name": "plain16_tanh",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "tanh"
+    },
+    {
+      "name": "plain16_softsign",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "softsign"
+    },
+    {
+      "name": "plain16_atan",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "atan"
+    },
+    {
+      "name": "f26r16_linear",
+      "filler_rank": 26,
+      "role_rank": 16,
+      "activation": "identity"
+    },
+    {
+      "name": "f26r16_tanh",
+      "filler_rank": 26,
+      "role_rank": 16,
+      "activation": "tanh"
+    },
+    {
+      "name": "f16r26_tanh",
+      "filler_rank": 16,
+      "role_rank": 26,
+      "activation": "tanh"
+    },
+    {
+      "name": "plain26_tanh",
+      "filler_rank": 26,
+      "role_rank": 26,
+      "activation": "tanh"
+    },
+    {
+      "name": "inventory16_linear",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "identity",
+      "inventory": true
+    },
+    {
+      "name": "inventory16_tanh",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "tanh",
+      "inventory": true
+    },
+    {
+      "name": "inventory16_softsign",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "softsign",
+      "inventory": true
+    },
+    {
+      "name": "inventory16_atan",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "atan",
+      "inventory": true
+    },
+    {
+      "name": "both16_linear",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "identity",
+      "inventory": true,
+      "geometry": true
+    },
+    {
+      "name": "both16_tanh",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "tanh",
+      "inventory": true,
+      "geometry": true
+    },
+    {
+      "name": "both16_softsign",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "softsign",
+      "inventory": true,
+      "geometry": true
+    },
+    {
+      "name": "both16_atan",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "atan",
+      "inventory": true,
+      "geometry": true
+    },
+    {
+      "name": "geometry16_tanh",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "tanh",
+      "geometry": true
+    },
+    {
+      "name": "both16_tanh_state",
+      "filler_rank": 16,
+      "role_rank": 16,
+      "activation": "tanh",
+      "inventory": true,
+      "geometry": true,
+      "state_only": true
+    }
+  ],
+  "edit_modes": [
+    "raw_difference",
+    "clipped_difference",
+    "inverse_transport"
+  ],
+  "selection": "Among bounded-reconstruction candidates and strictly bounded edit modes, maximize the equal mean of single-substitution and swap all-five-probe correctness on validation delay five; ties prefer fewer parameters then lower validation state MSE. Raw difference and linear models are diagnostic controls only. Repeat the selected specification and mode with two fixed seeds; never reselect using test.",
+  "repeat_seeds": [
+    52,
+    53
+  ],
+  "delays": [
+    1,
+    5,
+    20
+  ],
+  "bootstrap_scene_families": 4000,
+  "notes": [
+    "All activation functions have slope one at zero. Centered sigmoid is exactly tanh after rescaling, so is not a separate candidate.",
+    "Inventory and geometry are marginal tensor terms; centering alone is an exact reparameterization at initialization, while independent marginal heads relax shared-rank constraints.",
+    "No future/query label, node ID, or visitation-dependent gate is a model input. The original observed-current-input and integrated-position context q is retained in every model.",
+    "Latent factor transposition exchanges filler/role naming without increasing capacity; it is tested as an algebraic identity, not an independent candidate."
+  ]
+}

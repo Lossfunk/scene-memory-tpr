@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-11",
+  "full_replay_device": "cpu",
+  "matched_families": 398,
+  "archived_comparison": {
+    "linear_behavior": {
+      "compared_numbers": 39,
+      "max_absolute_difference": 8.946362262118868e-08
+    },
+    "linear_representation": {
+      "compared_numbers": 8,
+      "max_absolute_difference": 1.1920928955078125e-07
+    },
+    "linear_retrieval": {
+      "compared_numbers": 6,
+      "max_absolute_difference": 0.0
+    },
+    "tanh_behavior": {
+      "compared_numbers": 39,
+      "max_absolute_difference": 5.954577364519764e-08
+    },
+    "tanh_representation": {
+      "compared_numbers": 8,
+      "max_absolute_difference": 5.960464477539063e-08
+    },
+    "tanh_retrieval": {
+      "compared_numbers": 6,
+      "max_absolute_difference": 0.0
+    },
+    "original_behavior": {
+      "compared_numbers": 39,
+      "max_absolute_difference": 3.6248600732147196e-08
+    },
+    "donor_behavior": {
+      "compared_numbers": 39,
+      "max_absolute_difference": 5.394474900111135e-08
+    }
+  },
+  "contract_tests_passed": 8,
+  "portable_copy_tests_and_audit_passed": true,
+  "wheel_build_passed": true,
+  "smoke_fit_evaluation_passed": true,
+  "full_refit_repeated": false,
+  "http_fetch_tested": false
+}

@@ -1,0 +1,13 @@
+{
+  "scenes": 8,
+  "seed": 413003,
+  "groups": 24,
+  "rejected_scene_steps": [],
+  "variant_order": [
+    "original",
+    "single",
+    "swap"
+  ],
+  "observations_only": true,
+  "original_accuracy": 1.0
+}

@@ -1,0 +1,4 @@
+# Minimal CPU/MPS analysis environment; no training dashboard or external logging.
+numpy==2.4.2
+torch==2.10.0
+matplotlib==3.11.1
