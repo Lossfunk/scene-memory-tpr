@@ -142,8 +142,8 @@ Next steps are to withhold particular letter–region combinations during fittin
 From this directory, using Python 3.12:
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
+python3.12 -m venv .venv-scene-tpr
+source .venv-scene-tpr/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install -e .
 python -m unittest discover -s tests -v

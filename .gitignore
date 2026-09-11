@@ -9,3 +9,4 @@ runs/
 build/
 dist/
 .pytest_cache/
+.venv-scene-tpr/
