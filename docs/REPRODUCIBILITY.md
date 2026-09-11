@@ -9,6 +9,7 @@ All commands below run from the repository root, after the README environment se
 ```bash
 python -m unittest discover -s tests -v
 python scripts/audit_results.py --plot
+python scripts/draw_setup.py
 python scripts/draw_methods.py
 ```
 
@@ -20,7 +21,8 @@ intervals, paired gains, state R², assignment identification, and immediate out
 agreement from the bundled evidence and compares them with the archived report.
 It writes `results/audited.json`, `results/metrics.csv` and `figures/results.{png,pdf}`.
 These are regenerated summaries of old evidence, not fresh experiments.
-`draw_methods.py` separately regenerates the explanatory methods diagram.
+`draw_setup.py` regenerates Figure 1 (scene, predictive GRU and its TPR approximation); `draw_methods.py`
+regenerates Figure 2 (intervention). The audit plot is Figure 3 (results).
 
 ## Replay the fitted models
 

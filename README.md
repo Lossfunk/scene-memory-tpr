@@ -1,16 +1,26 @@
 # Editing scene memory with a simple tensor-product representation
 
-**Can a simple model of “which letter is where” explain a recurrent network’s memory well enough to change what it recalls?** We fit a tensor-product representation (TPR) to a trained scene network, calculate changes in that explanatory model, and apply them to the network’s hidden state. The basic linear TPR gets surprisingly far: the network recalls the intended replacement letter in **85.75%** of tests, while accuracy at unchanged locations remains about **96%**. We first examine this result, then ask whether adding a bounded nonlinearity, tanh, helps further.
+**Can a simple model of “which letter is where” explain a recurrent network’s memory well enough to change what it recalls?** We fit a tensor-product representation (TPR) to a trained scene network, calculate changes in that explanatory model, and apply them to the network’s hidden state. The basic linear TPR gets surprisingly far: the network recalls the intended replacement letter in **85.75%** of tests, while accuracy at unchanged locations remains about **96%**. The report follows three figures: **the scene, the GRU, and our model of its state (Figure 1), the intervention test (Figure 2), and the results (Figure 3)**. We first examine the basic TPR, then ask whether adding a bounded nonlinearity, tanh, helps further.
 
 ## Why this experiment?
 
 In [Ventura, Bosch, Kietzmann and Thorat’s scene study](https://escholarship.org/uc/item/1mj18812), a recurrent network built from gated recurrent units (GRUs) observes letters one at a time and predicts the next letter from the current letter and a saccade-like displacement. This task requires remembering letters and their locations. We use the **publicly released trained GRU from that study**, available in [the authors’ scene-network repository](https://github.com/KietzmannLab/minimal_world_model_interp); its exact training condition is not documented in the checkpoint itself.
+
+There are three levels here: **the scene is the world; the GRU is trained to predict observations in that world; the TPR is our model of the GRU’s hidden state during that task.** The TPR uses observed letter–position assignments and current processing context to predict a state. We do not give it the task of predicting the GRU’s entire state-update process.
 
 Good next-letter predictions tell us that the network remembers something useful, but not how it organizes that memory. A list of letters alone cannot distinguish “A on the left, B on the right” from the reverse arrangement. We need an explanatory model that keeps track of **which content belongs to which location**.
 
 A TPR makes that hypothesis explicit: represent a letter and a location separately, bind them by an outer product, and add the bindings together. This gives us named parts we can manipulate. Removing one binding and inserting another predicts a particular change in the network’s state; swapping two bindings tests location assignment while keeping the same letters. The purpose of fitting a TPR is therefore to turn a description of scene memory into **testable predictions about how recall should change**.
 
 Following the motivation of [McCoy et al.’s TPR framework](https://arxiv.org/abs/2608.29530v1), we ask both whether these bindings predict recorded GRU states and whether their proposed edits work in the GRU. Agreement on both tests would make the decomposition useful for explaining memory, even if it leaves some recurrent activity unexplained. The GRU’s weights stay fixed throughout.
+
+**Figure 1 connects these three levels.** Panel A shows the scene and the GRU’s prediction task. Panel B shows the TPR approximation of the GRU’s state; it is evaluated against states recorded from the GRU.
+
+![Figure 1. A: a six-letter scene, its current-letter and displacement inputs, and the GRU’s next-letter prediction. B: letter and position vectors form outer products, which are summed and mapped to a predicted GRU state.](figures/setup.png)
+
+**Figure 1 — The scene, its predictive GRU, and our explanatory TPR.** In A, the axes are spatial coordinates, not time. D is the current letter; the arrow moves from (0, 0) to (2.5, 2), where A is the correct next-letter target. The full map is shown only for the reader; input/output projection layers are omitted from this schematic. The GRU is given D and the displacement, and must predict A before A is supplied. In B, a letter vector is multiplied by a position vector to form one binding matrix; these matrices are added over observed locations. Colored cells illustrate signed feature values, with reduced dimensions for legibility; they are not measured activations. The sum, together with current processing context, predicts the recorded GRU state. The notation is defined below.
+
+This original schematic draws on [Ventura et al., Figure 1B](https://escholarship.org/uc/item/1mj18812) and [McCoy et al., Figure 2.1](https://arxiv.org/html/2608.29530v1#S2.F1), using the six-distinct-letter scenes tested here. Ventura et al.’s broader task also allows four or five locations and repeated letters. [Figure PDF](figures/setup.pdf)
 
 ## Start with the simplest TPR
 
@@ -73,10 +83,11 @@ $H'$ is the edited GRU state. The clipping operation sets any entry below −1 t
 
 Let the edited GRU take five intervening updates, then one further update with a movement directed at the queried location. Score its prediction before supplying the letter there. No update on this path supplies a letter from an edited location or the queried location. Test each location on a separate copy of the edited state, so one query cannot teach an answer to another. Score five locations: one replacement and four unchanged locations, or two swapped and three unchanged locations. The already-specified next destination is excluded because it must immediately be observed. [Exact timing and code](docs/METHODS.md#intervention-and-probe-timing)
 
-**Read the methods figure from left to right:** the blue side computes both predictions and their subtraction using the same fitted TPR. Only the resulting difference crosses to the orange side, where it is added once to the actual GRU state. Recall is then tested using separate copies of that edited state. This procedure applies to both the linear and tanh models.
+**Read Figure 2 from left to right:** the blue side computes both predictions and their subtraction using the same fitted TPR. Only the resulting difference crosses to the orange side, where it is added once to the actual GRU state. Recall is then tested using separate copies of that edited state. This procedure applies to both the linear and tanh models.
 
-![Left: change a letter assignment in the TPR model and subtract its two state predictions. Right: add that predicted difference to the actual GRU state, then test recall.](figures/methods.png)
+![Figure 2. Left: change a letter assignment in the TPR model and subtract its two state predictions. Right: add that predicted difference to the actual GRU state, then test recall.](figures/methods.png)
 
+**Figure 2 — Analysis setup.** Arrows trace the calculation: change the TPR assignment, subtract its two predictions, add the difference to the GRU, and test recall. Both TPR predictions use the same fitted weights and context. The GRU starts from its actual state after 35 inputs; it is edited once, then each of five queried locations is tested from a separate copy. [Figure PDF](figures/methods.pdf)
 
 ## How well does the basic TPR do?
 
@@ -119,11 +130,11 @@ Here $\tanh$ is the hyperbolic tangent, applied separately to each entry of the 
 
 Tanh improves replacement accuracy by **3.25 percentage points** (95% interval: 1.00–5.50) and swap accuracy per location by **4.75 points** (2.88–6.75). Accuracy at unchanged locations stays similar. These intervals compare the models on the same scenes and resample scenes, not individual queries. [All results](results/audited.json) · [CSV](results/metrics.csv)
 
-The plot below separates **changing the intended answers** (first three rows) from **preserving other answers** (next two). Look first for the orange points to the right of the blue points in the first three rows: tanh helps the requested changes. Then compare the preservation rows with the gray diamonds: both edits still cost some accuracy relative to leaving the GRU untouched.
+Figure 3 separates **changing the intended answers** (first three rows) from **preserving other answers** (next two). Look first for the orange points to the right of the blue points in the first three rows: tanh helps the requested changes. Then compare the preservation rows with the gray diamonds: both edits still cost some accuracy relative to leaving the GRU untouched.
 
-![Recall accuracy by outcome: linear TPR in blue, TPR with tanh in orange, and unedited GRU references in gray.](figures/results.png)
+![Figure 3. Recall accuracy by outcome: linear TPR in blue, TPR with tanh in orange, and unedited GRU references in gray.](figures/results.png)
 
-**How to read the plot.** The horizontal axis is accuracy in percent; farther right means more correct answers. The vertical axis lists different scoring rules, not a numerical variable. Dots show average scores across 400 scenes; horizontal bars show 95% intervals from 4,000 scene-bootstrap resamples. Blue denotes the basic linear TPR and orange the tanh model. Gray diamonds show unedited-GRU accuracy on the unchanged locations. Numbers at the right give the corresponding dot values. The last row is stricter: all five queried locations must be correct, including unchanged letters. We calculate this separately for replacement and swap, then average the two task scores. Each query is tested on its own copy of the state; “both” and “all five” combine those independent-copy outcomes for the same scene.
+**Figure 3 — Results and how to read them.** The horizontal axis is accuracy in percent; farther right means more correct answers. The vertical axis lists different scoring rules, not a numerical variable. Dots show average scores across 400 scenes; horizontal bars show 95% intervals from 4,000 scene-bootstrap resamples. Blue denotes the basic linear TPR and orange the tanh model. Gray diamonds show unedited-GRU accuracy on the unchanged locations. Numbers at the right give the corresponding dot values. The last row is stricter: all five queried locations must be correct, including unchanged letters. We calculate this separately for replacement and swap, then average the two task scores. Each query is tested on its own copy of the state; “both” and “all five” combine those independent-copy outcomes for the same scene. [Figure PDF](figures/results.pdf)
 
 Both models have 770,644 parameters. The tanh configuration was selected using validation results within an earlier 18-specification study; this focused report presents it alongside the matched linear control. [Selection record](results/original_selection.json) · [Original study configuration](configs/original_study.json)
 
@@ -131,7 +142,7 @@ Both models have 770,644 parameters. The tanh configuration was selected using v
 
 We fitted a TPR to ask whether an explicit “which letter belongs where” description could **explain and control** the GRU’s memory. We learned that this simple decomposition is useful in both senses: it distinguishes the correct assignment among alternatives, and its proposed state changes make the GRU recall different assignments with substantial selectivity. The swap result matters because the scene contains exactly the same letters; their locations must change in recall.
 
-Thus, the TPR does more than summarize states: it supplies an explicit rule for predicting useful changes to them. A second model that bounds its predictions with tanh improves these results further. At the same time, predicting the entire state remains much harder than proposing a useful edit. This points toward a model of an important component of scene memory, rather than a complete account of the GRU’s computation.
+Thus, the TPR does more than summarize states: it supplies an explicit rule for predicting useful changes to them. A second model that bounds its predictions with tanh improves these results further. At the same time, predicting the entire state remains much harder than proposing a useful edit. This gives us a useful approximation of the GRU’s scene-memory state. It does not yet specify the recurrent process by which the GRU builds, updates, and reads that memory.
 
 It does not yet establish that the GRU literally stores or reads a TPR. Full-dimensional letter vectors can support separate position maps for each letter, and the fitting examples change letters throughout the viewing history, so predicted differences may include effects of past observations. The incomplete prediction of the entire state leaves open whether a static scene-memory component coexists with other recurrent processing. Results also concern one scene-network checkpoint with unverified training-condition provenance.
 

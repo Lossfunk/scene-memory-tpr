@@ -33,9 +33,9 @@ def main():
                     arrowprops=dict(arrowstyle='-|>', color=color, lw=1.3,
                                     shrinkA=2, shrinkB=2))
 
-    text(6, 6.78, 'Calculate a change in the TPR model. Test its effect in the GRU.', 16, fontweight='bold')
-    text(2.9, 6.24, 'TPR: explanatory model', 14, BLUE, fontweight='bold')
-    text(9.35, 6.24, 'GRU: trained scene network', 14, ORANGE, fontweight='bold')
+    text(6, 6.78, 'Figure 2. Calculate the edit in the TPR; test it in the GRU', 16, fontweight='bold')
+    text(2.9, 6.24, 'TPR: model of the GRU state', 13, BLUE, fontweight='bold')
+    text(9.35, 6.24, 'GRU: predicts scene observations', 12.5, ORANGE, fontweight='bold')
     text(2.9, 5.90, 'Same fitted model for both predictions', 10)
     text(9.35, 5.90, 'Weights stay fixed throughout', 10)
     ax.plot([6.25, 6.25], [1.65, 6.40], color='#dddddd', lw=.8, zorder=0)
@@ -55,7 +55,7 @@ def main():
     arrow((9.375, 4.66), (9.375, 4.25), ORANGE)
     box(7.25, 3.39, 4.25, .85, 'Actual GRU state', r'$H$', ORANGE)
     arrow((9.375, 3.37), (9.375, 2.92), ORANGE)
-    box(7.25, 1.96, 4.25, .94, 'Add the predicted change; clip to bounds',
+    box(7.25, 1.96, 4.25, .94, 'Add the change; keep entries in [−1, 1]',
         r"$H'=\mathrm{clip}_{[-1,1]}(H+\Delta\widehat{H})$", ORANGE)
     arrow((5.52, 2.42), (7.22, 2.42), BLUE)
     text(6.36, 2.80, 'Apply once', 10, BLUE)
@@ -63,7 +63,7 @@ def main():
 
     text(3.2, 1.15, 'Replacement or two-location swap\nAll assignment changes and subtractions\nabove happen in the TPR model.', 11, BLUE)
     box(7.25, .48, 4.25, .94, 'Test the GRU’s recall',
-        '5 updates + 1 outgoing-query update', ORANGE)
+        '5 intervening updates, then 1 query update', ORANGE)
     text(6, .12, 'Five queries, each from its own copy of H′. On each query path, edited and queried locations are not observed.', 10)
     fig.subplots_adjust(left=.02, right=.98, top=.98, bottom=.02)
     for ext in ['png', 'pdf']:

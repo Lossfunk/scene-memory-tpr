@@ -53,3 +53,32 @@ clipped, and each query consumes five intervening updates plus one outgoing-quer
 update without observing the queried or edited locations. The plot captions now
 define axes, intervals, reference markers and the all-five scoring rule. The
 regenerated evidence audit passed; numerical results remain unchanged.
+
+## Final three-figure report audit
+
+The final report follows scene/GRU/TPR relationship (Figure 1), intervention (Figure 2),
+then results (Figure 3). Figure 1 was checked against Ventura et al.'s Figure 1B
+and scene-generation methods, McCoy et al.'s Figure 2.1, and this repository's
+sampler and TPR computation. It is an original schematic: no source artwork or
+fitted activation values are presented as data. The caption distinguishes the
+six-distinct-letter tests from the source paper's broader scene distribution.
+
+All three generated figures were visually inspected; layout collisions in the
+initial setup draft were corrected. The text and figure conventions agree on
+inputs, state dimensions, context, TPR-side subtraction, clipping, timing,
+independent queries and scoring. The eight contract tests and saved-evidence
+audit passed again. All report equations parsed locally and relative file links
+resolved. The release hashes and ZIP contents were verified; the ZIP contains
+only the intended release files, including `.gitignore`. GitHub's live renderer
+was not exercised by this local check, and no new scientific experiments were run.
+
+A further layout and terminology review checked all three figures at 840-pixel
+README width and rendered the PDF exports separately. Main annotation bounds
+were checked for overlap and clipping, followed by visual inspection of labels,
+arrows, axes and box padding. No annotation overlaps or canvas clipping remained.
+Figure 1 now explicitly distinguishes the scene, the GRU that predicts it, and
+the TPR approximation of the GRU's state. Its tile addition shows one binding
+plus the sum of the others, removing a distracting omitted-term ellipsis.
+The TPR is not presented as a second predictor of the scene or as a complete
+model of recurrent state updates. The README and all figure descriptions use
+the same distinction. These are presentation changes; results are unchanged.

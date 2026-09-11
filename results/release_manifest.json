@@ -3,13 +3,13 @@
   "sha256": {
     ".gitignore": "e95dc4cbc299f5e9f1bf587c16e87d2bf107922773bb95cb297f6ec69b76cd52",
     "LICENSE": "4422f4fcd3ea1fd26c378f711389f4b772927712d059e39fe679cf77c469a76a",
-    "README.md": "06f25c33d708bf20e21e0477c14764b63e52f3d79d8fc2906985bc7e1751ce53",
-    "THIRD_PARTY.md": "6c95af54fe0d91bb6dd03e25a18cc7e6951de3d21422cd94f6acb057060a03fc",
+    "README.md": "e2386245401dd8a1cde855eaf4677995eb8f4e34d3b90872771ad23d69af7c51",
+    "THIRD_PARTY.md": "7daad8b738af51868d662813fc1d49a528ba2c8675533c864f760bf1d7eacceb",
     "configs/experiment.json": "5809fdbfeadaf366e270f4aafe197b80f1bf536ca64dfa53600e3329c8b5a2c3",
     "configs/original_study.json": "ed1afab8c84bc73119b2f55cded082a9becc85e84e752ac0eda6f8b6bb326206",
     "configs/upstream.json": "654fbcb092d9639e8d65da1851622681ffa00382d1d3d051e453c78d432cbd9f",
     "docs/METHODS.md": "54d37d458f959dba1e8dff634684985062803f8ac7771027da146bfe97588baf",
-    "docs/REPRODUCIBILITY.md": "a4895c8a3434e318ad74a671dafafb794689c3b5f4d29892596fa157dea761ce",
+    "docs/REPRODUCIBILITY.md": "44a0c06830c25f52f8adf7e536e25e6620ceb834d95f08c75e68678926852130",
     "models/f26r16_linear_s51.pt": "24b28062fe340eb183e849847e5ff033cba4372b0d5838704bb44f24cb06667a",
     "models/f26r16_tanh_s51.pt": "387af33176a01ed6308fe8c23064c4e412b7dd08df124d9907e0962d4c4b6ba7",
     "models/training_mean.npy": "c2cbbc9d97d4972b366d4ae99a8780b8f9b3ae916f3139909cf9bc82973b54eb",
@@ -22,7 +22,7 @@
     "results/original_validation.json": "00138e35f7489733e9b530a741ab03545f59e7cea986f336fedae5652f4c10de",
     "results/provenance.json": "17125dbad084c71397277193909ee27c61d854d669d008c7b7665cd6fa6e76f6",
     "results/reported.json": "4332f48ca65d2d84122b0993ff48d7e2eeba3bfce68443122a8a1f99b0c7d4e5",
-    "scripts/audit_results.py": "30f58fd09051c2e5f81a05a01faa4aab99b99f2fb3203b8f4a9a078c6a221ed7",
+    "scripts/audit_results.py": "9820389976c578d38751f3dd88340a654446fd9ffa1491ccb8beeb90792b8f72",
     "scripts/fetch_assets.py": "7fb478cfa51d04bc52f7c847aa9c16cc9e0abe0dbd45ef523fcb284cf582927a",
     "scripts/run.py": "da51b922f504be50efebae210b9269d984cdd947884b530c8c89ee8463b216ce",
     "scripts/verify_release.py": "256aca6853aa033bd1b22b96bd082856b5822d88f7c05fe56347dabb97080f77",
@@ -39,6 +39,7 @@
     "src/binding_dynamics/model.py": "b04e3023f8170fd0d0edb535acac2298989312b23464edbe120115205cf9189b",
     "tests/fixture.npz": "978885def622fb1d5c89899177dd37497026ce67c0c45ddf8fe7d95036781d4e",
     "tests/test_contracts.py": "3de8c3bdcf525caba9fdf98f099086a40b2c281fcc8d89a013e7f7e2a1528e95",
-    "scripts/draw_methods.py": "56b871d6b2beec46cb3f72dbd1bc6b469332625af93d717660d2896e87736788"
+    "scripts/draw_methods.py": "7cf615bcbe99cca8ced4bdca208198915bce1b4667d12bf3572224de377ac958",
+    "scripts/draw_setup.py": "271af22a0acbcdf33aeaf8b99342762b79a60943bd049441a4578fb6c70283f8"
   }
 }

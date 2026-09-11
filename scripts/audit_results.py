@@ -47,8 +47,8 @@ def plot(rows):
     from matplotlib.lines import Line2D
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,
                          "axes.spines.top": False, "axes.spines.right": False})
-    metrics = [("single_target", "Replacement letter retrieved"),
-               ("swap_target", "Swapped letter retrieved (per location)"),
+    metrics = [("single_target", "Replacement letter recalled"),
+               ("swap_target", "Swapped letter recalled (per location)"),
                ("swap_all_targets", "Both swapped letters recalled correctly"),
                ("single_unchanged", "Unchanged locations after replacement"),
                ("swap_unchanged", "Unchanged locations after swap"),
@@ -70,7 +70,7 @@ def plot(rows):
             ax.errorbar(mean, index, xerr=[[mean-lo], [hi-mean]], fmt="D", markersize=3,
                         color=colors["original"], linewidth=.8)
     ax.set(yticks=range(len(metrics)), yticklabels=[label for _, label in metrics],
-           xlim=(0, 100), ylim=(len(metrics)-.5, -.65), xlabel="Accuracy (%; farther right means more correct)")
+           xlim=(0, 100), ylim=(len(metrics)-.5, -.65), xlabel="Accuracy (%)")
     ax.spines["left"].set_visible(False)
     ax.tick_params(axis="y", length=0, pad=12)
     ax.grid(axis="x", color="#e6e6e6", linewidth=.6)
@@ -79,7 +79,7 @@ def plot(rows):
                      linestyle="", label=label) for name, label in
               [("linear", "Linear TPR"), ("tanh", "TPR + tanh"), ("original", "Without editing")]]
     fig.legend(handles=legend, loc="upper left", bbox_to_anchor=(.02, .93), frameon=False, ncol=3, fontsize=9)
-    fig.suptitle("Recall after TPR edits: intended changes and unchanged letters",
+    fig.suptitle("Figure 3. Recall after TPR edits: intended changes and unchanged letters",
                  x=.025, ha="left", fontsize=12.5, y=.985)
     fig.text(.025, .025, "400 scenes · 5 intervening updates + 1 query update · edited and queried locations not re-observed\n"
              "95% intervals resample scenes. Each location is tested on a separate copy of the edited state.",

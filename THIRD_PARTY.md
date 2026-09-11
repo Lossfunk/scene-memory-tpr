@@ -29,3 +29,14 @@ DISCOVER source code or paper PDF is redistributed here.
 
 Please cite the scene paper when using its network and the TPR paper when drawing
 on its framework, along with this repository's version or commit for these results.
+
+## Explanatory figures
+
+Figure 1 is an original drawing informed by Ventura et al.'s Figure 1B (the
+scene and prediction task) and McCoy et al.'s Figure 2.1 (filler–role products,
+summation and mapping to a neural representation). Its scene illustrates this
+repository's six-distinct-letter evaluation setting; the source scene paper also
+uses four or five locations and repeated letters. The colored TPR tiles are an
+illustration of the construction, not learned values. No source-paper artwork
+is reproduced. Figures 2 and 3 depict this repository's procedure and results.
+All three figures can be regenerated using the included plotting scripts.
