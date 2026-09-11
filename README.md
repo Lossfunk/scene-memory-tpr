@@ -4,7 +4,7 @@
 
 ## Why this experiment?
 
-In [Ventura, Bosch, Kietzmann and Thorat’s scene study](https://escholarship.org/uc/item/1mj18812), a recurrent network built from gated recurrent units (GRUs) observes letters one at a time and predicts the next letter from the current letter and a saccade-like displacement. This task requires remembering letters and their locations. We use the **publicly released trained GRU from that study**, available in [the authors’ scene-network repository](https://github.com/KietzmannLab/minimal_world_model_interp); its exact training condition is not documented in the checkpoint itself.
+In [Ventura, Bosch, Kietzmann and Thorat’s scene study](https://escholarship.org/uc/item/1mj18812), a recurrent network built from gated recurrent units (GRUs) observes letters one at a time and predicts the next letter from the current letter and a saccade-like displacement. This task requires remembering letters and their locations. We use the **publicly released trained GRU from that study**, available in [the authors’ scene-network repository](https://github.com/KietzmannLab/minimal_world_model_interp).
 
 There are three levels here: **the scene is the world; the GRU is trained to predict observations in that world; the TPR is our model of the GRU’s hidden state during that task.** The TPR uses observed letter–position assignments and current processing context to predict a state. We do not give it the task of predicting the GRU’s entire state-update process.
 
@@ -144,7 +144,7 @@ We fitted a TPR to ask whether an explicit “which letter belongs where” desc
 
 Thus, the TPR does more than summarize states: it supplies an explicit rule for predicting useful changes to them. A second model that bounds its predictions with tanh improves these results further. At the same time, predicting the entire state remains much harder than proposing a useful edit. This gives us a useful approximation of the GRU’s scene-memory state. It does not yet specify the recurrent process by which the GRU builds, updates, and reads that memory.
 
-It does not yet establish that the GRU literally stores or reads a TPR. Full-dimensional letter vectors can support separate position maps for each letter, and the fitting examples change letters throughout the viewing history, so predicted differences may include effects of past observations. The incomplete prediction of the entire state leaves open whether a static scene-memory component coexists with other recurrent processing. Results also concern one scene-network checkpoint with unverified training-condition provenance.
+It does not yet establish that the GRU literally stores or reads a TPR. Full-dimensional letter vectors can support separate position maps for each letter, and the fitting examples change letters throughout the viewing history, so predicted differences may include effects of past observations. The incomplete prediction of the entire state leaves open whether a static scene-memory component coexists with other recurrent processing.
 
 Next steps are to withhold particular letter–region combinations during fitting, test repeated letters, and test newly learned or overwritten assignments without rewriting past observations. We should also ask whether the GRU reads letters through the fitted factors, and repeat the study on checkpoints with documented training conditions.
 
