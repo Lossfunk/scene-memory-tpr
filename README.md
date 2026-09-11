@@ -11,7 +11,7 @@ For locations observed so far:
 $$
 M=\sum_i f(\ell_i)\otimes r(p_i),\qquad
 r(p)=R\phi(p),\qquad
-z=b+Uq+W\operatorname{vec}(M).
+z=b+Uq+W\,\mathrm{vec}(M).
 $$
 
 $$
@@ -36,7 +36,7 @@ At step 34, after 35 input updates, choose previously observed locations with at
 Predict the state for the original and changed assignments, subtract the two predictions, and add that difference to the actual network state:
 
 $$
-H'=\operatorname{clip}_{[-1,1]}\left(H+\widehat H(M+\Delta M,q)-\widehat H(M,q)\right).
+H'=\mathrm{clip}_{[-1,1]}\left(H+\widehat H(M+\Delta M,q)-\widehat H(M,q)\right).
 $$
 
 Clipping is separate from tanh and is used in **both** comparisons. Let the network take five further steps, then ask it to predict the letter at a location. It does not see that letter, or either edited letter, along the way. Test each location on a separate copy of the edited state. This prevents earlier queries from teaching answers to later ones. Score five locations: one replacement and four unchanged locations, or two swapped and three unchanged locations. Exclude the already-specified next destination, which must immediately be observed. [Exact protocol and code links](docs/METHODS.md#intervention-and-probe-timing)
