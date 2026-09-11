@@ -9,6 +9,7 @@ All commands below run from the repository root, after the README environment se
 ```bash
 python -m unittest discover -s tests -v
 python scripts/audit_results.py --plot
+python scripts/draw_methods.py
 ```
 
 The tests check saved-model forward/edit parity, the exact linear tensor edit,
@@ -19,6 +20,7 @@ intervals, paired gains, state R², assignment identification, and immediate out
 agreement from the bundled evidence and compares them with the archived report.
 It writes `results/audited.json`, `results/metrics.csv` and `figures/results.{png,pdf}`.
 These are regenerated summaries of old evidence, not fresh experiments.
+`draw_methods.py` separately regenerates the explanatory methods diagram.
 
 ## Replay the fitted models
 

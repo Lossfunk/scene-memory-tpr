@@ -1,71 +1,108 @@
 # Editing scene memory with a simple tensor-product representation
 
-**A short empirical study: can an explicit sum of letter–position bindings change what a frozen scene network recalls?** A linear tensor-product representation (TPR) lets us change which letter the network recalls at a chosen location. Adding tanh improves this ability. Neither model predicts the entire network state exactly or changes recall without errors.
+**Can a simple model of “which letter is where” explain a recurrent network’s memory well enough to change what it recalls?** We fit a tensor-product representation (TPR) to a trained scene network, calculate changes in that explanatory model, and apply them to the network’s hidden state. The basic linear TPR gets surprisingly far: the network recalls the intended replacement letter in **85.75%** of tests, while accuracy at unchanged locations remains about **96%**. We first examine this result, then ask whether adding a bounded nonlinearity, tanh, helps further.
 
-The [scene paper](https://escholarship.org/uc/item/1mj18812) by Ventura, Bosch, Kietzmann and Thorat studies a recurrent network that predicts the next letter from the current letter and a saccade-like displacement. Motivated by [McCoy et al.'s TPR framework](https://arxiv.org/abs/2608.29530v1), we ask whether an explicit binding decomposition can support **controlled, location-specific changes in recall**. This is a small follow-up on the public checkpoint, not a replication of every paper result.
+## Why this experiment?
 
-## The formulation
+In [Ventura, Bosch, Kietzmann and Thorat’s scene study](https://escholarship.org/uc/item/1mj18812), a recurrent network observes letters one at a time and predicts the next letter from the current letter and a saccade-like displacement. This task requires remembering letters and their locations. We use the **publicly released trained GRU from that study**, available in [the authors’ scene-network repository](https://github.com/KietzmannLab/minimal_world_model_interp); its exact training condition is not documented in the checkpoint itself.
 
-For locations observed so far:
+Motivated by [McCoy et al.’s TPR framework](https://arxiv.org/abs/2608.29530v1), we test a concrete hypothesis: a sum of letter–position bindings can model this memory. Matching recorded states is one test. A stronger test is to change a binding in the TPR model and ask whether the predicted change makes the GRU recall the new assignment, while preserving the others. The GRU’s weights stay fixed throughout.
 
-$$
-M=\sum_i f(\ell_i)\otimes r(p_i),\qquad
-r(p)=R\phi(p),\qquad
-z=b+Uq+W\,\mathrm{vec}(M).
-$$
+## Start with the simplest TPR
+
+For the locations observed so far, bind each letter vector to a position vector and sum:
 
 $$
-\widehat H_{\mathrm{linear}}=z,
-\qquad
-\widehat H_{\mathrm{tanh}}=\tanh(z).
+M=\sum_i f(\ell_i)\otimes r(p_i),\qquad r(p)=R\phi(p).
 $$
 
-Letters have **26-dimensional** learned filler vectors; positions have **16-dimensional** learned roles built from 27 fixed smooth coordinate features. Each observed location contributes once with weight one. The 1,536 reconstructed coordinates cover all three GRU layers. The context $q$ contains observed current-input, position, movement and timing information; it supplies no queried-letter answer.
+Here, $f$ is a learned letter vector, $r$ is a learned position vector, and $\otimes$ is the outer product. Each observed location contributes once. This is a natural starting point for a static scene: it explicitly represents the assignments we want to explain and manipulate.
 
-Why this form? A static scene is a set of letter–position assignments, so one outer product per observed assignment is a direct, testable hypothesis. Shared smooth roles allow continuous positions without a separate learned vector for each scene. Tanh is a minimal bounded comparison: it acts **after the entire affine sum**, matching the GRU's $[-1,1]$ range. It adds no parameters, but makes state-space edits depend on the baseline activation. Both models have 770,644 parameters; full-dimensional letter vectors do not demonstrate alphabet compression.
-
-We fit both models to network states and to the differences between states produced by running the same viewing sequence on original and changed scenes. The scene network itself is never retrained. The tanh configuration was selected on validation within an earlier **18-specification study**. This repository isolates the linear/tanh comparison; [selection records](results/original_selection.json) and the [original configuration](configs/original_study.json) preserve that context. See [methods](docs/METHODS.md) for the exact features, loss and optimizer.
-
-## Manipulations
-
-At step 34, after 35 input updates, choose previously observed locations with at least three visits, excluding the current location and the already-specified next destination.
-
-- **Replacement:** change letter $a$ to a letter $b$ absent from the scene, at position $p$: $\Delta M=[f(b)-f(a)]\otimes r(p)$.
-- **Swap:** exchange letters $a,b$ at positions $p,s$: $\Delta M=[f(b)-f(a)]\otimes[r(p)-r(s)]$. The scene still contains the same letters.
-
-Predict the state for the original and changed assignments, subtract the two predictions, and add that difference to the actual network state:
+A linear map translates this tensor into a prediction of the GRU’s hidden state:
 
 $$
-H'=\mathrm{clip}_{[-1,1]}\left(H+\widehat H(M+\Delta M,q)-\widehat H(M,q)\right).
+\widehat H(M,q)=b+Uq+W\,\mathrm{vec}(M).
 $$
 
-Clipping is separate from tanh and is used in **both** comparisons. Let the network take five further steps, then ask it to predict the letter at a location. It does not see that letter, or either edited letter, along the way. Test each location on a separate copy of the edited state. This prevents earlier queries from teaching answers to later ones. Score five locations: one replacement and four unchanged locations, or two swapped and three unchanged locations. Exclude the already-specified next destination, which must immediately be observed. [Exact protocol and code links](docs/METHODS.md#intervention-and-probe-timing)
+The context $q$ accounts for the current input, position, outgoing movement, time and number of observed locations; it contains no queried-letter answer. Letter vectors have 26 dimensions and position vectors have 16. Positions are represented through 27 fixed smooth coordinate features, allowing the same learned map to work across continuous positions. The predicted state has 1,536 entries, covering all three GRU layers. [Exact features and dimensions](docs/METHODS.md#representation-and-training)
 
-## Observed results
+We fit this **model of the GRU** using recorded GRU states, plus the differences between states produced by running the same viewing sequence on original and changed scenes. There are 1,000 training and 250 validation scenes. Only the TPR model is fitted; the GRU is never retrained.
 
-**400 test scenes not used for fitting or selection**, separate from 1,000 training and 250 validation scenes; six unique letters per scene. Error bars are 95% bootstrap intervals, resampling scenes rather than treating queries on the same scene as independent observations.
+## Test the model by changing recall
 
-![Recall and preservation after a single TPR edit, with 95% scene-bootstrap intervals](figures/results.png)
+![Left: change a letter assignment in the TPR model and subtract its two state predictions. Right: add that predicted difference to the actual GRU state, then test recall.](figures/methods.png)
 
-Replacement accuracy is **85.75% → 89.00%**, and average swap-target accuracy is **76.1% → 80.9%**, from linear to tanh. Paired gains are **3.25 points [1.00, 5.50]** and **4.75 points [2.88, 6.75]**, respectively. Both swapped letters are recalled correctly in **63.25% → 68.75%** of scenes, testing each on a separate copy. The figure’s last row requires all five answers to be correct, including unchanged letters, and averages the replacement and swap tasks.
+At step 34, after 35 input updates, choose familiar locations with at least three visits, excluding the current location and the already-specified next destination. Make either change **in the TPR**:
 
-| How well does the model predict the state? | Linear | Tanh |
+- **Replacement:** at position $p$, replace letter $a$ with a letter $b$ absent from the scene. The tensor change is $\Delta M=[f(b)-f(a)]\otimes r(p)$.
+- **Swap:** exchange letters $a,b$ at positions $p,s$. The tensor change is $\Delta M=[f(b)-f(a)]\otimes[r(p)-r(s)]$. Keeping the same letters makes this a test of their assignments to locations.
+
+Next, calculate the difference between the TPR model’s two state predictions:
+
+$$
+\Delta\widehat H=\widehat H(M+\Delta M,q)-\widehat H(M,q).
+$$
+
+**Both predictions and their subtraction are computed in the explanatory TPR model.** We then add that predicted difference to the actual GRU state $H$:
+
+$$
+H'=\mathrm{clip}_{[-1,1]}(H+\Delta\widehat H).
+$$
+
+Clipping keeps every hidden-state entry within the GRU’s range. We do not subtract a separately recorded “changed-scene” GRU state, or replace the entire state with the TPR prediction. This tests whether the change proposed by the TPR has the intended effect on the GRU’s behavior.
+
+Let the edited GRU take five further steps, then predict a letter at a queried location. It never sees the queried or edited letters along the way. Test each location on a separate copy of the edited state, so one query cannot teach an answer to another. Score five locations: one replacement and four unchanged locations, or two swapped and three unchanged locations. The already-specified next destination is excluded because it must immediately be observed. [Exact timing and code](docs/METHODS.md#intervention-and-probe-timing)
+
+## How well does the basic TPR do?
+
+On **400 test scenes not used for fitting or selection**, each containing six distinct letters:
+
+| GRU recall after an edit proposed by the linear TPR | Accuracy |
+| --- | ---: |
+| Intended replacement letter | **85.75%** |
+| Intended swapped letter, averaged over the two locations | **76.1%** |
+| Both swapped letters correct, testing each on a separate copy | **63.25%** |
+| Unchanged letters after replacement | **96.06%** |
+| Unchanged letters after swapping | **95.58%** |
+
+Without editing, accuracy on those unchanged locations is 98.13% and 98.42%, respectively. Thus, the TPR makes substantial, fairly selective changes to recall, with a two-to-three-point cost at other locations. As a reference, if the GRU actually experiences the changed scene from the beginning, it scores 99.50% on replacements and 98.38% per swapped location. There is still room to improve the artificial edits.
+
+**Does the TPR also predict the right representation?** Rearrange three familiar letters to create six assignments with the same positions and viewing sequence. For each predicted state, ask whether its matching actual GRU state is closer than the other five. The linear TPR identifies the correct assignment **90.28%** of the time, versus 16.67% chance, across 398 eligible scenes from a separate 400-scene set. Its state R² is **0.594**, measured against predicting the training-set mean state.
+
+However, if we replace the *entire* GRU state with the TPR prediction, the next-letter answer agrees with the original GRU’s answer only **47.75%** of the time. This is a different test from adding a predicted change to the real state: adding a change retains the parts of the real state that the TPR does not explain. The model captures useful assignment structure without yet accounting for the whole recurrent state.
+
+## Does tanh help further?
+
+The GRU’s hidden-state entries lie in $[-1,1]$, whereas a linear TPR prediction can extend beyond that range. To respect this constraint, we fit a second model that applies **tanh after the complete sum**:
+
+$$
+\widehat H_{\mathrm{tanh}}(M,q)=\tanh\left(b+Uq+W\,\mathrm{vec}(M)\right).
+$$
+
+The letter–position decomposition stays the same. Tanh adds no parameters and is included during fitting. We still subtract the two model predictions and add their difference to the actual GRU state. The final clipping step is used for **both** models; it is separate from bounding the predictions with tanh.
+
+| Measure | Basic linear TPR | TPR with tanh |
 | --- | ---: | ---: |
-| State R²: improvement over predicting the training mean | 0.594 | 0.620 |
-| Predicted state is closest to its matching actual state, among six assignments | 90.28% | 91.75% |
-| Same next-letter answer after replacing the entire state with the predicted state | 47.75% | 64.25% |
+| Replacement letter recalled | 85.75% | **89.00%** |
+| Swapped letter recalled, per location | 76.1% | **80.9%** |
+| Both swapped letters correct | 63.25% | **68.75%** |
+| Unchanged letters after replacement | 96.06% | 96.19% |
+| Unchanged letters after swapping | 95.58% | 95.42% |
+| Correct assignment among six state alternatives | 90.28% | 91.75% |
+| State R² | 0.594 | 0.620 |
+| Same next-letter answer after replacing the entire state | 47.75% | 64.25% |
 
-For the six-way test, rearrange three letters while keeping the same positions and viewing sequence. Compare each predicted state with the six actual states: is its own assignment closest? There are 398 eligible scenes in a separate 400-scene set; chance is 16.67%. Unchanged-location accuracy after edits is about 95–96%, versus **98.13%/98.42% without editing**. For comparison, running the network from the beginning on the changed scene gives 99.50% replacement and 98.38% swap accuracy per location. This shows that the network can usually answer these queries when it has actually experienced the changed scene.
+Tanh improves replacement accuracy by **3.25 percentage points** (95% interval: 1.00–5.50) and swap accuracy per location by **4.75 points** (2.88–6.75). Accuracy at unchanged locations stays similar. These intervals compare the models on the same scenes and resample scenes, not individual queries. [Comparison plot with intervals](figures/results.png) · [All results](results/audited.json) · [CSV](results/metrics.csv)
 
-[All values and intervals](results/audited.json) · [CSV](results/metrics.csv) · [Figure PDF](figures/results.pdf) · [Evidence format](docs/REPRODUCIBILITY.md#bundled-evidence)
+Both models have 770,644 parameters. The tanh configuration was selected using validation results within an earlier 18-specification study; this focused report presents it alongside the matched linear control. [Selection record](results/original_selection.json) · [Original study configuration](configs/original_study.json)
 
-## Interpretation and limits
+## What does this tell us?
 
-The simplest TPR captures enough about which letter is where to change recall fairly selectively. Tanh improves recall at edited locations, but errors remain and accuracy at unchanged locations drops by about two to three percentage points. Crucially, **adding a predicted change to the real state works much better than replacing the entire state with a prediction**. The former keeps whatever the TPR fails to explain in the original state.
+**The basic TPR already provides a useful model of letter–position memory:** its predictions distinguish assignments, and its proposed edits often change recall at the intended location while largely preserving other letters. Respecting the GRU’s activation bounds with tanh improves this result further. That is meaningful progress toward an editable model of the network’s memory.
 
-This supports a useful approximation of letter–position bindings, not proof that the network literally stores or reads a TPR. Training examples change letters throughout the viewing history, so the learned differences may include effects of seeing different letters as well as remembering different assignments. A static scene memory could still be only one part of the recurrent state. Evidence comes from one checkpoint whose training condition remains unverified.
+It does not yet establish that the GRU literally stores or reads a TPR. Full-dimensional letter vectors can support separate position maps for each letter, and the fitting examples change letters throughout the viewing history, so predicted differences may include effects of past observations. The incomplete prediction of the entire state leaves open whether a static scene-memory component coexists with other recurrent processing. Results also concern one scene-network checkpoint with unverified training-condition provenance.
 
-Next: withhold particular letter–region combinations during fitting, test repeated letters, and ask whether the same factors explain newly learned or overwritten assignments without rewriting past observations. Also test whether the network reads letters through these factors, and repeat the study on checkpoints with documented training conditions.
+Next steps are to withhold particular letter–region combinations during fitting, test repeated letters, and test newly learned or overwritten assignments without rewriting past observations. We should also ask whether the GRU reads letters through the fitted factors, and repeat the study on checkpoints with documented training conditions.
 
 ## Run it
 
@@ -80,13 +117,17 @@ python -m unittest discover -s tests -v
 python scripts/audit_results.py --plot
 ```
 
-The audit rebuilds headline statistics and the figure from bundled evidence; **no upstream download is needed**. To replay the shipped fitted models against the frozen target:
+The included results let you reproduce the statistics and comparison plot without downloading the scene network. To run the recall experiments with the fitted TPR models, first download the trained scene network:
 
 ```bash
 python scripts/fetch_assets.py
 python scripts/run.py evaluate --device auto
 ```
 
-`auto` uses Apple MPS when available and CPU otherwise. The fetch downloads and verifies two pinned upstream files (about 61 MB); they remain ignored by Git. [Refitting, smoke checks, provenance and reproducibility limits](docs/REPRODUCIBILITY.md)
+`auto` uses Apple MPS when available and CPU otherwise. See [reproducing the experiments](docs/REPRODUCIBILITY.md) for fitting the TPR models from scratch, and [methods](docs/METHODS.md) for the full experimental specification.
 
-Original analysis code is MIT-licensed. The upstream model and checkpoint are not redistributed or relicensed; see [sources and attribution](THIRD_PARTY.md). Results were obtained on 10 September 2026; this focused release was assembled on 11 September 2026.
+Analysis code is MIT-licensed. See [sources and attribution](THIRD_PARTY.md) for the scene network and related work.
+
+## Acknowledgment
+
+The analyses, code, and report were developed with assistance from Astra, using **medium** and **xhigh** reasoning settings.

@@ -3,13 +3,13 @@
   "sha256": {
     ".gitignore": "1b2aa5484733049d078696e400d96adbe3287e1b8282cb9a85d629930c13f9cd",
     "LICENSE": "4422f4fcd3ea1fd26c378f711389f4b772927712d059e39fe679cf77c469a76a",
-    "README.md": "eed1876520a6d72164dcabdfd65ba555268128b63ce043467f47d5e2dd7b2c8f",
+    "README.md": "2600e236104b3c9b7951d7a4ee13e45261cd8ede5ae26cc195f9cb60327bfd4a",
     "THIRD_PARTY.md": "6c95af54fe0d91bb6dd03e25a18cc7e6951de3d21422cd94f6acb057060a03fc",
     "configs/experiment.json": "5809fdbfeadaf366e270f4aafe197b80f1bf536ca64dfa53600e3329c8b5a2c3",
     "configs/original_study.json": "ed1afab8c84bc73119b2f55cded082a9becc85e84e752ac0eda6f8b6bb326206",
     "configs/upstream.json": "654fbcb092d9639e8d65da1851622681ffa00382d1d3d051e453c78d432cbd9f",
     "docs/METHODS.md": "54d37d458f959dba1e8dff634684985062803f8ac7771027da146bfe97588baf",
-    "docs/REPRODUCIBILITY.md": "242c167c9809366d6cf05b655fb56416602621fc2229af8b63950c030a5738dc",
+    "docs/REPRODUCIBILITY.md": "a4895c8a3434e318ad74a671dafafb794689c3b5f4d29892596fa157dea761ce",
     "models/f26r16_linear_s51.pt": "24b28062fe340eb183e849847e5ff033cba4372b0d5838704bb44f24cb06667a",
     "models/f26r16_tanh_s51.pt": "387af33176a01ed6308fe8c23064c4e412b7dd08df124d9907e0962d4c4b6ba7",
     "models/training_mean.npy": "c2cbbc9d97d4972b366d4ae99a8780b8f9b3ae916f3139909cf9bc82973b54eb",
@@ -38,6 +38,7 @@
     "src/binding_dynamics/metrics.py": "ce3b507eaf8b2a05bc091368f8300a62287584e9c8a4d8e92834208da24fe0f2",
     "src/binding_dynamics/model.py": "b04e3023f8170fd0d0edb535acac2298989312b23464edbe120115205cf9189b",
     "tests/fixture.npz": "978885def622fb1d5c89899177dd37497026ce67c0c45ddf8fe7d95036781d4e",
-    "tests/test_contracts.py": "3de8c3bdcf525caba9fdf98f099086a40b2c281fcc8d89a013e7f7e2a1528e95"
+    "tests/test_contracts.py": "3de8c3bdcf525caba9fdf98f099086a40b2c281fcc8d89a013e7f7e2a1528e95",
+    "scripts/draw_methods.py": "772d1a3378174f29ea160a0d728d038e5449e4abfc47efea90edb49fb1cc9f93"
   }
 }

@@ -40,3 +40,8 @@ python scripts/verify_release.py
 
 The manifest excludes regenerated summaries/figures, this validation record, and
 ignored runtime data. It detects accidental changes; it is not a signed attestation.
+
+The README was subsequently reorganized to present the basic TPR results before
+the tanh comparison. The added methods diagram was rendered and visually checked;
+its plotting script is included. The explanatory changes do not alter experimental
+code, fitted models or results.
