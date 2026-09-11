@@ -45,3 +45,11 @@ The README was subsequently reorganized to present the basic TPR results before
 the tanh comparison. The added methods diagram was rendered and visually checked;
 its plotting script is included. The explanatory changes do not alter experimental
 code, fitted models or results.
+
+The expanded symbol definitions and revised methods figure were checked against
+`CleanTPR.edit`, `probe_path`, and the five-copy evaluation code: both TPR
+predictions share context, their difference is added to the actual state and then
+clipped, and each query consumes five intervening updates plus one outgoing-query
+update without observing the queried or edited locations. The plot captions now
+define axes, intervals, reference markers and the all-five scoring rule. The
+regenerated evidence audit passed; numerical results remain unchanged.

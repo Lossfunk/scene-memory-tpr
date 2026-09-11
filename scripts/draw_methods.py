@@ -36,7 +36,7 @@ def main():
     text(6, 6.78, 'Calculate a change in the TPR model. Test its effect in the GRU.', 16, fontweight='bold')
     text(2.9, 6.24, 'TPR: explanatory model', 14, BLUE, fontweight='bold')
     text(9.35, 6.24, 'GRU: trained scene network', 14, ORANGE, fontweight='bold')
-    text(2.9, 5.90, 'Fitted to GRU states and state differences', 10)
+    text(2.9, 5.90, 'Same fitted model for both predictions', 10)
     text(9.35, 5.90, 'Weights stay fixed throughout', 10)
     ax.plot([6.25, 6.25], [1.65, 6.40], color='#dddddd', lw=.8, zorder=0)
 
@@ -51,7 +51,7 @@ def main():
     box(.70, 1.96, 4.80, .94, 'Subtract the two TPR predictions',
         r'$\Delta\widehat{H}=\widehat{H}(M+\Delta M,q)-\widehat{H}(M,q)$', BLUE)
 
-    box(7.25, 4.68, 4.25, .86, 'Observe the original scene', '35 letter-and-movement inputs', ORANGE)
+    box(7.25, 4.68, 4.25, .86, 'Observe the original scene', '35 inputs (steps 0–34), then pause', ORANGE)
     arrow((9.375, 4.66), (9.375, 4.25), ORANGE)
     box(7.25, 3.39, 4.25, .85, 'Actual GRU state', r'$H$', ORANGE)
     arrow((9.375, 3.37), (9.375, 2.92), ORANGE)
@@ -63,8 +63,8 @@ def main():
 
     text(3.2, 1.15, 'Replacement or two-location swap\nAll assignment changes and subtractions\nabove happen in the TPR model.', 11, BLUE)
     box(7.25, .48, 4.25, .94, 'Test the GRU’s recall',
-        '5 further steps, then query a location', ORANGE)
-    text(6, .12, 'Test each location on a separate copy. Edited and queried letters are not observed along the test path.', 10)
+        '5 updates + 1 outgoing-query update', ORANGE)
+    text(6, .12, 'Five queries, each from its own copy of H′. On each query path, edited and queried locations are not observed.', 10)
     fig.subplots_adjust(left=.02, right=.98, top=.98, bottom=.02)
     for ext in ['png', 'pdf']:
         fig.savefig(ROOT/'figures'/f'methods.{ext}', dpi=180)

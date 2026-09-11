@@ -70,7 +70,7 @@ def plot(rows):
             ax.errorbar(mean, index, xerr=[[mean-lo], [hi-mean]], fmt="D", markersize=3,
                         color=colors["original"], linewidth=.8)
     ax.set(yticks=range(len(metrics)), yticklabels=[label for _, label in metrics],
-           xlim=(0, 100), ylim=(len(metrics)-.5, -.65), xlabel="Accuracy (%)")
+           xlim=(0, 100), ylim=(len(metrics)-.5, -.65), xlabel="Accuracy (%; farther right means more correct)")
     ax.spines["left"].set_visible(False)
     ax.tick_params(axis="y", length=0, pad=12)
     ax.grid(axis="x", color="#e6e6e6", linewidth=.6)
@@ -79,9 +79,9 @@ def plot(rows):
                      linestyle="", label=label) for name, label in
               [("linear", "Linear TPR"), ("tanh", "TPR + tanh"), ("original", "Without editing")]]
     fig.legend(handles=legend, loc="upper left", bbox_to_anchor=(.02, .93), frameon=False, ncol=3, fontsize=9)
-    fig.suptitle("Simple tensor-product edits change recall while largely preserving other locations",
+    fig.suptitle("Recall after TPR edits: intended changes and unchanged letters",
                  x=.025, ha="left", fontsize=12.5, y=.985)
-    fig.text(.025, .025, "400 scenes · 5 further steps, then a query · edited and queried letters not seen along the way\n"
+    fig.text(.025, .025, "400 scenes · 5 intervening updates + 1 query update · edited and queried locations not re-observed\n"
              "95% intervals resample scenes. Each location is tested on a separate copy of the edited state.",
              fontsize=8.5, color="#444444")
     fig.subplots_adjust(left=.40, right=.89, top=.80, bottom=.19)
